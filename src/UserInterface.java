@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -35,7 +36,8 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 	private ArrayList<Integer> blue_wall, small_dot, big_dot,
 							pacman_start, ghost_house, ghost_house_exit,
 							fruit, nothing, nextline;
-	private Player p = new Player();
+	private Player pac = new Player(0, 0, -30, 175, 30, 30, loadImage( "pacman_right.png" ));
+	private Player p = new Player(1, 1, 0, 0, 30, 30, loadImage( "pacman_left.png" ));
 
 	public UserInterface()
 	{
@@ -48,8 +50,9 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 	private enum Arrow_Pos
 	{
 		START_GAME,
+		CREDITS,
 		HELP,
-		CREDITS
+		QUIT
 	}
 
 	/*
@@ -112,32 +115,42 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 				{
 					case START_GAME:
 						xPos = 275;
-						yPos = 280;
-						break;
-
-					case HELP:
-						xPos = 250;
-						yPos = 310;
+						yPos = 260;
 						break;
 
 					case CREDITS:
 						xPos = 250;
-						yPos = 340;
+						yPos = 290;
+						break;
+
+					case HELP:
+						xPos = 235;
+						yPos = 320;
+						break;
+
+					case QUIT:
+						xPos = 235;
+						yPos = 350;
 						break;
 
 					default:
 						xPos = 275;
-						yPos = 280;
+						yPos = 260;
 						break;
 				}
 				g.drawImage(start_menu_arrow.getImage(), xPos, yPos, 45, 23, null);
 
+				// Animate the ghosts chasing pacman across the screen
+				pac.draw(g);
+				pac.update();
+				
 				//g.setColor(Color.YELLOW);
 				setForeground(Color.YELLOW);
 				g.setFont(new Font("Dialog", Font.PLAIN, 25));
-				g.drawString("Start Game", 135, 300);
-				g.drawString("Help", 175, 330);
-				g.drawString("Credits", 155, 360);
+				g.drawString("Start Game", 135, 280);
+				g.drawString("Credits", 160, 310);
+				g.drawString("Help", 175, 340);
+				g.drawString("Quit", 175, 370);
 				break;
 
 			case IN_GAME:
@@ -165,12 +178,15 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 			switch (arrow_pos)
 			{
 				case START_GAME:
-					arrow_pos = Arrow_Pos.CREDITS;
-					break;
-				case HELP:
-					arrow_pos = Arrow_Pos.START_GAME;
+					arrow_pos = Arrow_Pos.QUIT;
 					break;
 				case CREDITS:
+					arrow_pos = Arrow_Pos.START_GAME;
+					break;
+				case HELP:
+					arrow_pos = Arrow_Pos.CREDITS;
+					break;
+				case QUIT:
 					arrow_pos = Arrow_Pos.HELP;
 					break;
 
@@ -186,12 +202,15 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 			switch (arrow_pos)
 			{
 				case START_GAME:
-					arrow_pos = Arrow_Pos.HELP;
-					break;
-				case HELP:
 					arrow_pos = Arrow_Pos.CREDITS;
 					break;
 				case CREDITS:
+					arrow_pos = Arrow_Pos.HELP;
+					break;
+				case HELP:
+					arrow_pos = Arrow_Pos.QUIT;
+					break;
+				case QUIT:
 					arrow_pos = Arrow_Pos.START_GAME;
 					break;
 
@@ -269,6 +288,12 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 					}
 
 					break;
+				case CREDITS:
+					JOptionPane.showMessageDialog(this,
+							"Adam Childs - adchilds@eckerd.edu",
+							"Credits",
+							JOptionPane.INFORMATION_MESSAGE);
+					break;
 				case HELP:
 					DecimalFormat fmt = new DecimalFormat("#0.00");
 					JOptionPane.showMessageDialog(this, "Current version: v" + fmt.format(version) + "\n" +
@@ -277,16 +302,17 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 							"Pacman v" + fmt.format(version),
 							JOptionPane.INFORMATION_MESSAGE);
 					break;
-				case CREDITS:
-					JOptionPane.showMessageDialog(this,
-							"Adam Childs - adchilds@eckerd.edu",
-							"Credits",
-							JOptionPane.INFORMATION_MESSAGE);
-					break;
+				case QUIT:
+					System.exit(0);
+					break; // Technically don't need this, but to keep consistency...
 
 				default:
 					break;
 			}
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_D)
+		{
+			pac.setPlayerDirection(new Random().nextInt(2));
 		}
 	}
 

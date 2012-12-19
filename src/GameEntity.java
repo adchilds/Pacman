@@ -27,22 +27,22 @@ public abstract class GameEntity
 		return color;
 	}
 
-	public void setPositionX(int x)
+	public void setX(int x)
 	{
 		posX = x;
 	}
 
-	public int getPositionX()
+	public int getX()
 	{
 		return posX;
 	}
 
-	public void setPositionY(int y)
+	public void setY(int y)
 	{
 		posY = y;
 	}
 
-	public int getPositionY()
+	public int getY()
 	{
 		return posY;
 	}
