@@ -37,6 +37,10 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 							pacman_start, ghost_house, ghost_house_exit,
 							fruit, nothing, nextline;
 	private Player pac = new Player(0, 0, -30, 175, 30, 30, loadImage( "pacman_right.png" ));
+	private Ghost gr = new Ghost(pac.getX() - 50, pac.getY(), loadImage( "ghost_red.png" ));
+	private Ghost gp = new Ghost(gr.getX() - 50, pac.getY(), loadImage( "ghost_pink.png" ));
+	private Ghost gt = new Ghost(gp.getX() - 50, pac.getY(), loadImage( "ghost_teal.png" ));
+	private Ghost go = new Ghost(gt.getX() - 50, pac.getY(), loadImage( "ghost_orange.png" ));
 	private Player p = new Player(1, 1, 0, 0, 30, 30, loadImage( "pacman_left.png" ));
 
 	public UserInterface()
@@ -143,9 +147,17 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 				// Animate the ghosts chasing pacman across the screen
 				pac.draw(g);
 				pac.update();
+				gr.draw(g);
+				gr.update();
+				gp.draw(g);
+				gp.update();
+				gt.draw(g);
+				gt.update();
+				go.draw(g);
+				go.update();
 				
-				//g.setColor(Color.YELLOW);
-				setForeground(Color.YELLOW);
+				// Draw the menu options
+				setForeground(Color.YELLOW); // g.setColor(Color.YELLOW);
 				g.setFont(new Font("Dialog", Font.PLAIN, 25));
 				g.drawString("Start Game", 135, 280);
 				g.drawString("Credits", 160, 310);
