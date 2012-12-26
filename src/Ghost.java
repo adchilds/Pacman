@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 public class Ghost extends GameEntity
 {
-	
+
 	public Ghost(int x, int y, ImageIcon i)
 	{
 		posX = x;

@@ -1,27 +1,29 @@
-import java.awt.Graphics;
-import java.io.BufferedReader;
+import java.awt.Point;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 
 public class LevelHandler
 {
-	
-	public LevelHandler()
-	{
-		
-	}
+	private int currentLevel;
+	private SAXBuilder builder;
+	private Document doc;
+	private Element root;
+	private Level level;
+	private ArrayList<Point> boundaries;
+	private ArrayList<String> boundariesDir;
+	private Point pacman_start;
+	private String image_name;
 
-	public void draw(Graphics g)
+	public LevelHandler(int cl)
 	{
-		
-	}
-
-	public void update()
-	{
-		
+		currentLevel = cl;
+		loadLevelFromFile();
+		level = new Level(cl, boundaries, boundariesDir, pacman_start, image_name);
 	}
 
 	/**
@@ -31,54 +33,50 @@ public class LevelHandler
 	 * 
 	 * @param f The level file that we'll need to create the level from
 	 */
-	public ArrayList<Character> loadLevelFromFile(File f)
+	public boolean loadLevelFromFile()
 	{
-		ArrayList<Character> arr = new ArrayList<Character>();
-
-		BufferedReader br;
-		try {
-			br = new BufferedReader(new FileReader(f));
-			String line;
-			while ((line = br.readLine()) != null)
-			{
-				// Process the individual lines so that we can build the level
-				// B = BLUE WALL
-				// . = SMALL CIRCLE
-				// o = BIG CIRCLE
-				// X = PACMAN START
-				// G = GHOST HOUSE
-				// E = GHOST HOUSE EXIT
-				// F = POSSIBLE FRUIT LOCATION
-				for (int i = 0; i < line.length(); i++)
-				{
-					char c = line.charAt(i);
-					switch(c)
-					{
-						case 'B': // Blue wall
-						case '.': // Small circle
-						case 'o': // Big circle
-						case 'X': // Pacman start
-						case 'G': // Ghost house
-						case 'E': // Ghost house exit
-						case 'F': // Possible fruit location
-						case ' ': // Nothing
-						case '\n': // ENDLINE
-							arr.add(c);
-							break;
-
-						default:
-							break;
-					}
-				}
-			}
-			br.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		try
+		{
+			builder = new SAXBuilder();
+			doc = builder.build(new File("src/levels/level" + currentLevel + "/level" + currentLevel + ".xml"));
+			root = doc.getRootElement();
+		} catch (Exception e) {
+			// Program must not have been installed. Install it!
+			System.out.println( "Level file could not be found!" );
 		}
+
+		// Get the level image name
+		image_name = root.getChildText("image");
+
+		// Get the boundaries
+		boundaries = new ArrayList<Point>();
+		boundariesDir = new ArrayList<String>();
+		List<?> b = root.getChild("boundaries").getChildren();
 		
-		return arr;
+		int x, y, x2, y2;
+		String dir;
+		for (int i = 0; i < b.size(); i++)
+		{
+			x = Integer.parseInt(root.getChild("boundaries").getChild("b" + i).getChildText("x"));
+			y = Integer.parseInt(root.getChild("boundaries").getChild("b" + i).getChildText("y"));
+			x2 = Integer.parseInt(root.getChild("boundaries").getChild("b" + i).getChildText("x2"));
+			y2 = Integer.parseInt(root.getChild("boundaries").getChild("b" + i).getChildText("y2"));
+			dir = root.getChild("boundaries").getChild("b" + i).getChildText("dir");
+
+			for(int m = 0; m <= (Math.abs(x - x2) + 1); m++)
+				for (int n = 0; n <= (Math.abs(y - y2) + 1); n++)
+				{
+					boundaries.add(new Point(m + x, n + y));
+					boundariesDir.add(dir);
+				}
+		}
+
+		// Get pacman's starting location
+		x = Integer.parseInt(root.getChild("pacman_start").getChildText("x"));
+		y = Integer.parseInt(root.getChild("pacman_start").getChildText("y"));
+		pacman_start = new Point(x, y);
+		
+		return true;
 	}
 
 	public void listLevelFiles()
@@ -97,5 +95,19 @@ public class LevelHandler
 				System.out.println(file);
 			}
 		}
+	}
+
+	/**
+	 * <p>Gets the player's current level
+	 * @return int representing current level
+	 */
+	public int getCurrentLevel()
+	{
+		return currentLevel;
+	}
+
+	public Level getLevel()
+	{
+		return level;
 	}
 }

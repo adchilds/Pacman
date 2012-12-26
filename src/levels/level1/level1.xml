@@ -1,0 +1,71 @@
+<level>
+	<!-- Image for the level -->
+    <image>level1.png</image>
+
+    <!-- Boundary limits where pacman is not allowed to go -->
+    <boundaries>
+        <b0>
+            <dir>up</dir>
+            <x>18</x>
+            <y>69</y>
+            <x2>192</x2>
+            <y2>69</y2>
+        </b0>
+        <b1>
+            <dir>left</dir>
+            <x>18</x>
+            <y>69</y>
+            <x2>18</x2>
+            <y2>162</y2>
+        </b1>
+        <b2>
+            <dir>down</dir>
+            <x>18</x>
+            <y>144</y> <!-- MINUS 18 (pacman size) -->
+            <x2>86</x2>
+            <y2>144</y2> <!-- MINUS 18 (pacman size) -->
+        </b2>
+        <b3>
+            <dir>left</dir>
+            <x>86</x>
+            <y>162</y>
+            <x2>86</x2>
+            <y2>205</y2>
+        </b3>
+        <b4>
+            <dir>up</dir>
+            <x>-30</x>
+            <y>205</y>
+            <x2>86</x2>
+            <y2>205</y2>
+        </b4>
+        <b5>
+            <dir>down</dir>
+            <x>-30</x>
+            <y>208</y> <!-- MINUS 18 (pacman size) -->
+            <x2>86</x2>
+            <y2>208</y2> <!-- MINUS 18 (pacman size) -->
+        </b5>
+    </boundaries>
+
+    <!-- (x, y) location where pacman will begin -->
+    <pacman_start>
+        <x>195</x>
+        <y>240</y>
+    </pacman_start>
+
+    <!-- Possible fruit spawn locations -->
+    <fruit_pos>
+        
+    </fruit_pos>
+
+    <!-- Small dot locations -->
+    <small_dot_pos>
+        
+    </small_dot_pos>
+
+    <!--  Large dot locations -->
+	<large_dot_pos>
+	    
+	</large_dot_pos>
+</level>
