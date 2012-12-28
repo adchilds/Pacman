@@ -61,6 +61,7 @@ public class Player extends GameEntity
 	@Override
 	public void draw(Graphics g)
 	{
+		// Pacman
 		g.drawImage(image.getImage(), posX, posY, width, height, null);
 	}
 
@@ -76,7 +77,6 @@ public class Player extends GameEntity
 			{
 				image = pacman_closed;
 				mouth_open = false;
-				prevTime = curTime;
 			} else {
 				if (direction == Direction.RIGHT)
 					image = pacman_right;
@@ -88,8 +88,8 @@ public class Player extends GameEntity
 					image = pacman_down;
 
 				mouth_open = true;
-				prevTime = curTime;
 			}
+			prevTime = curTime;
 		}
 
 		/*
@@ -116,56 +116,42 @@ public class Player extends GameEntity
 				break;
 
 			case ALIVE:
-				if (direction == Direction.RIGHT)
+				if (inBounds()) // Is Pacman in bounds?
 				{
-					if (inBounds())
+					if (direction == Direction.RIGHT)
 					{
 						posX++; // Increase X
+
 						if (posX > 405)
 							posX = -30;
-					} else {
-						direction = Direction.STOPPED;
 					}
-				}
-				else if (direction == Direction.LEFT)
-				{
-					if (inBounds())
+					else if (direction == Direction.LEFT)
 					{
 						posX--; // Decrease X
-	
+
 						if (posX < -30)
 							posX = 435;
-					} else {
-						direction = Direction.STOPPED;
 					}
-				}
-				else if (direction == Direction.UP)
-				{
-					if (inBounds())
+					else if (direction == Direction.UP)
 					{
 						posY--; // Decrease Y
-	
+
 						if (posY < -30)
 							posY = 435;
-					} else {
-						direction = Direction.STOPPED;
 					}
-				}
-				else if (direction == Direction.DOWN)
-				{
-					if (inBounds())
+					else if (direction == Direction.DOWN)
 					{
 						posY++; // Increase Y
-	
+
 						if (posY > 435)
 							posY = -30;
-					} else {
-						direction = Direction.STOPPED;
 					}
-				}
-				else if (direction == Direction.STOPPED)
-				{
-					// Don't do anything
+					else if (direction == Direction.STOPPED)
+					{
+						// Don't do anything
+					}
+				} else {
+					direction = Direction.STOPPED;
 				}
 				break;
 
@@ -175,25 +161,18 @@ public class Player extends GameEntity
 	}
 
 	/**
-	 * <p>Checks to make sure pacman is not offscreen or somewhere he's
-	 * not supposed to be (i.e.: a set boundary)
-	 * @return true if pacman is okay, false otherwise
+	 * <p>Checks to make sure Pacman is not offscreen or somewhere he's
+	 * not supposed to be (i.e.: a non-existent boundary)
+	 * @return true if Pacman is okay, false otherwise
 	 */
 	public boolean inBounds()
 	{
-		Point curPos = new Point(posX, posY);
-		int a = pArr.indexOf(curPos); // Does the coordinate exist as a boundary?
+		// Take into account Pacman's width and height
+		Point curPos = new Point(posX + (getWidth() / 2), posY + (getHeight() / 2));
 
-		if (a == -1)
-			return true;
-		else
-		{
-			// If the boundary exists, is the player going the correct direction
-			// where we want to stop them?
-			if (Direction.valueOf(sArr.get(a).toUpperCase()) == direction)
-				return false;
-		}
-		return true;
+		if (pArr.indexOf(curPos) == -1) // Does the coordinate exist as a boundary?
+			return false;
+		return true; // Boundary exists, Pacman is okay
 	}
 
 	/**
