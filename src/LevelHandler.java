@@ -18,12 +18,13 @@ public class LevelHandler
 	private ArrayList<String> boundariesDir;
 	private Point pacman_start;
 	private String image_name;
+	private long high_score;
 
 	public LevelHandler(int cl)
 	{
 		currentLevel = cl;
 		loadLevelFromFile();
-		level = new Level(cl, boundaries, boundariesDir, pacman_start, image_name);
+		level = new Level(cl, boundaries, boundariesDir, pacman_start, image_name, high_score);
 	}
 
 	/**
@@ -75,7 +76,10 @@ public class LevelHandler
 		x = Integer.parseInt(root.getChild("pacman_start").getChildText("x"));
 		y = Integer.parseInt(root.getChild("pacman_start").getChildText("y"));
 		pacman_start = new Point(x, y);
-		
+
+		// High score for the current level
+		high_score = Long.parseLong(root.getChildText("high_score"));
+
 		return true;
 	}
 
