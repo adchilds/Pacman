@@ -11,14 +11,16 @@ public class Level
 	ArrayList<String> boundariesDir;
 	ImageIcon level_image;
 	Point start_location;
+	long high_score;
 
-	public Level(int l, ArrayList<Point> b, ArrayList<String> bd, Point s, String i)
+	public Level(int l, ArrayList<Point> b, ArrayList<String> bd, Point s, String i, long hs)
 	{
 		level = l;
 		boundaries = b;
 		boundariesDir = bd;
 		start_location = s;
 		level_image = loadLevelImage("level" + l + "/" + i);
+		high_score = hs;
 	}
 
 	public void draw(Graphics g)
@@ -54,6 +56,11 @@ public class Level
 	public int getLevelNumber()
 	{
 		return level;
+	}
+
+	public long getHighScore()
+	{
+		return high_score;
 	}
 
 	private ImageIcon loadLevelImage(String i)
