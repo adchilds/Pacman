@@ -1,7 +1,4 @@
 *.class
 *.DS_Store
 *bin/
-
-src/images/.DS_Store
-
 src/images/.DS_Store
