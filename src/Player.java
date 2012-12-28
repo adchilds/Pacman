@@ -16,7 +16,6 @@ public class Player extends GameEntity
 						pacman_right, pacman_up;
 	private Level currentLevel;
 	private ArrayList<Point> pArr;
-	private ArrayList<String> sArr;
 
 	public Player(Level l, int state, int dir, int x, int y, int w, int h, ImageIcon i)
 	{
@@ -152,6 +151,7 @@ public class Player extends GameEntity
 					}
 				} else {
 					direction = Direction.STOPPED;
+					System.out.println("(" + posX + ", " + posY + ")");
 				}
 				break;
 
@@ -171,7 +171,17 @@ public class Player extends GameEntity
 		Point curPos = new Point(posX + (getWidth() / 2), posY + (getHeight() / 2));
 
 		if (pArr.indexOf(curPos) == -1) // Does the coordinate exist as a boundary?
+		{
+			if (direction == Direction.LEFT)
+				posX++;
+			else if (direction == Direction.RIGHT)
+				posX--;
+			else if (direction == Direction.UP)
+				posY++;
+			else
+				posY--;
 			return false;
+		}
 		return true; // Boundary exists, Pacman is okay
 	}
 
@@ -357,6 +367,5 @@ public class Player extends GameEntity
 	public void setBoundaries()
 	{
 		pArr = currentLevel.getBoundaries();
-		sArr = currentLevel.getBoundariesDir();
 	}
 }
