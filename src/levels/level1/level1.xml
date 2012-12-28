@@ -7,13 +7,30 @@
 
     <!-- Boundary limits where pacman is allowed to move -->
     <boundaries>
-        <b0>
-            <dir>left, right</dir>
+        <b0> <!-- LEFT and RIGHT -->
             <x>139</x>
-            <y>238</y>
+            <y>242</y>
             <x2>264</x2>
-            <y2>258</y2>
+            <y2>247</y2>
         </b0>
+        <b1> <!-- UP and DOWN -->
+            <x>137</x>
+            <y>180</y>
+            <x2>142</x2>
+            <y2>275</y2>
+        </b1>
+        <b2> <!-- UP and DOWN -->
+            <x>262</x>
+            <y>180</y>
+            <x2>267</x2>
+            <y2>275</y2>
+        </b2>
+        <b3> <!-- LEFT and RIGHT -->
+            <x>139</x>
+            <y>178</y>
+            <x2>264</x2>
+            <y2>183</y2>
+        </b3>
     </boundaries>
 
     <!-- (x, y) location where pacman will begin -->
