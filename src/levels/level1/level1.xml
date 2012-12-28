@@ -31,6 +31,24 @@
             <x2>264</x2>
             <y2>183</y2>
         </b3>
+        <b4> <!-- LEFT and RIGHT -->
+            <x>30</x>
+            <y>273</y>
+            <x2>180</x2>
+            <y2>278</y2>
+        </b4>
+        <b5> <!-- LEFT and RIGHT -->
+            <x>224</x>
+            <y>273</y>
+            <x2>377</x2>
+            <y2>278</y2>
+        </b5>
+        <b6> <!-- UP and DOWN -->
+            <x>178</x>
+            <y>273</y>
+            <x2>183</x2>
+            <y2>309</y2>
+        </b6>
     </boundaries>
 
     <!-- (x, y) location where pacman will begin -->
