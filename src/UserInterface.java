@@ -30,8 +30,9 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 	
 	private boolean start_menu_initiated = false, game_objects_initialized = false, keypressed = false;
 	private double version = 0.01;
-	int arrowXPos = 275, arrowYPos = 260;
+	private int arrowXPos = 275, arrowYPos = 260;
 	private Arrow_Pos arrow_pos = Arrow_Pos.START_GAME;
+	private Font f;
 	private Game_State game_state = Game_State.START_SCREEN;
 	private Ghost gr, gp, gt, go;
 	private Graphics graphics;
@@ -168,16 +169,14 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 
 				// Draw the menu options
 				setForeground(Color.YELLOW); // g.setColor(Color.YELLOW);
-				g.setFont(new Font("Dialog", Font.PLAIN, 25));
-				g.drawString("Start Game", 135, 280);
-				g.drawString("Credits", 160, 310);
-				g.drawString("Help", 175, 340);
-				g.drawString("Quit", 175, 370);
+				f = new Font("Dialog", Font.PLAIN, 25);
+				drawString(g, "Start Game", 135, 280, Color.YELLOW, f);
+				drawString(g, "Credits", 160, 310, Color.YELLOW, f);
+				drawString(g, "Help", 175, 340, Color.YELLOW, f);
+				drawString(g, "Quit", 175, 370, Color.YELLOW, f);
 				break;
 
 			case IN_GAME:
-				g.setColor(Color.BLACK);
-
 				if (!game_objects_initialized)
 				{
 					Point start_pos = lh.getLevel().getStartPos();
@@ -186,7 +185,7 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 					System.out.println( "Level: " + lh.getLevel().getLevelNumber());
 					System.out.println( "Starting pos: (" + start_pos.x + ", " + start_pos.y + ")" );
 					System.out.println( "Boundaries: " + lh.getLevel().getBoundaries() );
-					player = new Player(lh.getLevel(), 1, 1, start_pos.x, start_pos.y, 18, 18, loadImage( "pacman_closed.png" ));
+					player = new Player(lh.getLevel(), 1, 1, start_pos.x, start_pos.y, 15, 15, loadImage( "pacman_closed.png" ));
 					game_objects_initialized = true;
 				}
 
@@ -196,18 +195,53 @@ public class UserInterface extends JFrame implements ActionListener, KeyListener
 					// Render the level
 					lh.getLevel().draw(g);
 					lh.getLevel().update();
-					
+
 					// Render the player
 					player.draw(g);
 					player.update();
+
+					// Render the player's score
+					f = new Font("Dialog", Font.PLAIN, 20);
+					drawString(g, Long.toString(player.getScore()), 60, 47, Color.WHITE, f);
+
+					// Render the high score for the current level
+					String highscore;
+					if (player.getScore() > lh.getLevel().getHighScore()) // Player's score is > high score
+						highscore = Long.toString(player.getScore());
+					else
+						highscore = Long.toString(lh.getLevel().getHighScore()); // High score is > player's current score
+					drawString(g, highscore, 335 - (highscore.length() * 11), 47, Color.WHITE, f);
 				} else {
-					
+					// Set the level's high score to the player's if theirs is larger
+					if (player.getScore() > lh.getLevel().getHighScore())
+					{
+						
+					}
+
 				}
 				break;
 
 			default:
 				break;
 		}
+	}
+
+	/**
+	 * <p>Helper function to control drawing text to the screen in the specified
+	 * location, color, font, and size.
+	 * 
+	 * @param g The graphics context to draw onto
+	 * @param s The String of text to render
+	 * @param x X position
+	 * @param y Y position
+	 * @param c Color of the text
+	 * @param f Font styling for the text, i.e.: new Font("Dialog", Font.PLAIN, 20)
+	 */
+	public void drawString(Graphics g, String s, int x, int y, Color c, Font f)
+	{
+		g.setFont(f);
+		g.setColor(c);
+		g.drawString(s, x, y);
 	}
 
 	@Override
