@@ -15,7 +15,6 @@ public class LevelHandler
 	private Element root;
 	private Level level;
 	private ArrayList<Point> boundaries;
-	private ArrayList<String> boundariesDir;
 	private Point pacman_start;
 	private String image_name;
 	private long high_score;
@@ -24,7 +23,7 @@ public class LevelHandler
 	{
 		currentLevel = cl;
 		loadLevelFromFile();
-		level = new Level(cl, boundaries, boundariesDir, pacman_start, image_name, high_score);
+		level = new Level(cl, boundaries, pacman_start, image_name, high_score);
 	}
 
 	/**
@@ -51,25 +50,19 @@ public class LevelHandler
 
 		// Get the boundaries
 		boundaries = new ArrayList<Point>();
-		boundariesDir = new ArrayList<String>();
 		List<?> b = root.getChild("boundaries").getChildren();
 		
 		int x, y, x2, y2;
-		String dir;
 		for (int i = 0; i < b.size(); i++)
 		{
 			x = Integer.parseInt(root.getChild("boundaries").getChild("b" + i).getChildText("x"));
 			y = Integer.parseInt(root.getChild("boundaries").getChild("b" + i).getChildText("y"));
 			x2 = Integer.parseInt(root.getChild("boundaries").getChild("b" + i).getChildText("x2"));
 			y2 = Integer.parseInt(root.getChild("boundaries").getChild("b" + i).getChildText("y2"));
-			dir = root.getChild("boundaries").getChild("b" + i).getChildText("dir");
 
 			for(int m = 0; m <= (Math.abs(x - x2) + 1); m++)
 				for (int n = 0; n <= (Math.abs(y - y2) + 1); n++)
-				{
 					boundaries.add(new Point(m + x, n + y));
-					boundariesDir.add(dir);
-				}
 		}
 
 		// Get pacman's starting location
